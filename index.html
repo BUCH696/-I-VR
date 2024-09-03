@@ -38,23 +38,13 @@
         showBanner: function(msg, type) {}
       };
 
-      // Adjust for mobile devices
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        config.devicePixelRatio = 1;
-      }
-
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
-          // No progress bar needed
+          // Прогресс-бар не нужен
         }).then((unityInstance) => {
-          // Auto fullscreen on load
-          unityInstance.SetFullscreen(1);
+          // Действия после загрузки приложения
         }).catch((message) => {
           alert(message);
         });
