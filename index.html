@@ -12,7 +12,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: black;
+            background-color: #141414;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -34,149 +34,30 @@
             align-items: center;
             justify-content: center;
             color: white;
+            z-index: 10;
         }
 
         .loading {
-            text-transform: uppercase;
             font-family: 'Cabin Condensed', sans-serif;
             font-weight: bold;
             font-size: 100pt;
-            text-align: center;
-            height: 120px;
-            line-height: 110px;
-            vertical-align: bottom;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 100px;
-            bottom: 0;
-            display: block;
-            color: rgba(0, 0, 0, 0);
-            background-image: url('http://i66.tinypic.com/optxd3.png');
+            text-transform: uppercase;
+            color: transparent;
+            background: linear-gradient(180deg, rgba(0, 153, 255, 0.8), rgba(0, 153, 255, 0.1));
             background-clip: text;
-            text-shadow: 0px 0px rgba(255, 255, 255, 0.06);
-            animation: wave-animation 1s infinite linear, loading-animation 10s infinite linear alternate;
-            background-size: 200px 100px;
-            background-repeat: repeat-x;
-        }
-
-        .loading-2 {
-            top: 300px;
-            width: 473px;
-            height: 97px;
-            font-size: 0;
-            background: rgba(255, 255, 255, 0.06);
-            margin: 0 auto;
-        }
-
-        .ff {
-            position: absolute;
-            font-size: 12pt;
-            top: -20px;
-            color: white;
-            line-height: 12pt;
-        }
-
-        .loading-2-text {
-            background-image: url('http://i66.tinypic.com/1jxje9.png');
-            width: 473px;
-            height: 97px;
-            display: inline-block;
-        }
-
-        @keyframes wave-animation {
-            0% {
-                background-position: 0 bottom;
-            }
-            100% {
-                background-position: 200px bottom;
-            }
-        }
-
-        @keyframes loading-animation {
-            0% {
-                background-size: 200px 0px;
-            }
-            100% {
-                background-size: 200px 200px;
-            }
-        }
-
-        .cube {
-            margin: auto;
-            font-size: 24px;
-            height: 1em;
-            width: 1em;
+            -webkit-background-clip: text;
+            text-shadow: 0px 0px rgba(255, 255, 255, 0.1);
             position: relative;
-            transform: rotatex(30deg) rotatey(45deg);
-            transform-style: preserve-3d;
-            animation: cube-spin 1.5s infinite ease-in-out alternate;
+            display: inline-block;
+            animation: fill-water 2s infinite ease-in-out;
         }
 
-        .side {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transform-style: preserve-3d;
-        }
-
-        .side::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #3498db;
-            transform: translatez(0.5em);
-            animation: cube-explode 1.5s infinite ease-in-out;
-            opacity: 0.5;
-        }
-
-        .side:nth-child(1) {
-            transform: rotatey(90deg);
-        }
-
-        .side:nth-child(2) {
-            transform: rotatey(180deg);
-        }
-
-        .side:nth-child(3) {
-            transform: rotatey(270deg);
-        }
-
-        .side:nth-child(4) {
-            transform: rotatey(360deg);
-        }
-
-        .side:nth-child(5) {
-            transform: rotatex(90deg);
-        }
-
-        .side:nth-child(6) {
-            transform: rotatex(270deg);
-        }
-
-        @keyframes cube-spin {
+        @keyframes fill-water {
             0% {
-                transform: rotatex(30deg) rotatey(45deg);
+                background-size: 0% 100%;
             }
             100% {
-                transform: rotatex(30deg) rotatey(405deg);
-            }
-        }
-
-        @keyframes cube-explode {
-            0% {
-                transform: translatez(0.5em);
-            }
-            50% {
-                transform: translatez(0.75em);
-            }
-            100% {
-                transform: translatez(0.5em);
+                background-size: 100% 100%;
             }
         }
     </style>
@@ -184,18 +65,6 @@
 <body>
     <div id="loading-container">
         <div class="loading">Loading</div>
-        <div class="loading-2">
-            <div class="ff">For browsers that don't support background-clip:text:</div>
-            <div class="loading-2-text"></div>
-        </div>
-        <div class="cube">
-            <div class="side"></div>
-            <div class="side"></div>
-            <div class="side"></div>
-            <div class="side"></div>
-            <div class="side"></div>
-            <div class="side"></div>
-        </div>
     </div>
     <canvas id="unity-canvas" tabindex="-1"></canvas>
     <script>
