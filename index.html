@@ -4,100 +4,103 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>МIРЪVR</title>
-    <link href="https://fonts.googleapis.com/css?family=Cabin+Condensed:700" rel="stylesheet" type="text/css">
     <style>
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #141414;
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-family: Arial, sans-serif;
-        }
-
-        #unity-canvas {
-            width: 100%;
-            height: 100%;
-            background: black;
-            display: none;
-        }
-
-        #loading-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            color: white;
-            z-index: 10;
+            height: 100vh;
+            background-color: #f0f0f0; /* Светлый фон */
         }
 
-        .loading {
-            font-family: 'Cabin Condensed', sans-serif;
-            font-weight: bold;
-            font-size: 100pt;
-            text-transform: uppercase;
-            color: transparent;
-            background: linear-gradient(180deg, rgba(0, 153, 255, 0.8), rgba(0, 153, 255, 0.1));
-            background-clip: text;
-            -webkit-background-clip: text;
-            text-shadow: 0px 0px rgba(255, 255, 255, 0.1);
+        .cube {
+            font-size: 48px; /* Увеличенный размер куба */
+            height: 2em;
+            width: 2em;
             position: relative;
-            display: inline-block;
-            animation: fill-water 2s infinite ease-in-out;
+            transform: rotatex(30deg) rotatey(45deg);
+            transform-style: preserve-3d;
+            animation: cube-spin 1.5s infinite ease-in-out;
         }
 
-        @keyframes fill-water {
+        .side {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transform-style: preserve-3d;
+        }
+
+        .side::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #333; /* Темный цвет для куба */
+            transform: translatez(1em); /* Увеличение глубины для больших кубов */
+            animation: cube-explode 1.5s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        .side:nth-child(1) {
+            transform: rotatey(90deg);
+        }
+
+        .side:nth-child(2) {
+            transform: rotatey(180deg);
+        }
+
+        .side:nth-child(3) {
+            transform: rotatey(270deg);
+        }
+
+        .side:nth-child(4) {
+            transform: rotatey(360deg);
+        }
+
+        .side:nth-child(5) {
+            transform: rotatex(90deg);
+        }
+
+        .side:nth-child(6) {
+            transform: rotatex(270deg);
+        }
+
+        @keyframes cube-spin {
             0% {
-                background-size: 0% 100%;
+                transform: rotatex(30deg) rotatey(45deg);
             }
             100% {
-                background-size: 100% 100%;
+                transform: rotatex(30deg) rotatey(405deg);
+            }
+        }
+
+        @keyframes cube-explode {
+            0% {
+                transform: translatez(1em);
+            }
+            50% {
+                transform: translatez(1.5em);
+            }
+            100% {
+                transform: translatez(1em);
             }
         }
     </style>
 </head>
 <body>
-    <div id="loading-container">
-        <div class="loading">Loading</div>
+    <div class="cube">
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
     </div>
-    <canvas id="unity-canvas" tabindex="-1"></canvas>
-    <script>
-        var canvas = document.querySelector("#unity-canvas");
-        var loadingContainer = document.querySelector("#loading-container");
-        var buildUrl = "Build";
-        var loaderUrl = buildUrl + "/MIRVR.loader.js";
-        var config = {
-            dataUrl: buildUrl + "/MIRVR.data",
-            frameworkUrl: buildUrl + "/MIRVR.framework.js",
-            codeUrl: buildUrl + "/MIRVR.wasm",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "MIRVR",
-            productName: "MIRVR",
-            productVersion: "0.1",
-            showBanner: function(msg, type) {}
-        };
-
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-            createUnityInstance(canvas, config, (progress) => {
-                // Прогресс-бар не нужен
-            }).then((unityInstance) => {
-                // Скрываем контейнер загрузки и показываем canvas после загрузки
-                loadingContainer.style.display = 'none';
-                canvas.style.display = 'block';
-            }).catch((message) => {
-                alert(message);
-            });
-        };
-
-        document.body.appendChild(script);
-    </script>
 </body>
 </html>
