@@ -111,6 +111,23 @@
                 transform: translatez(1em);
             }
         }
+
+        /* Адаптация под вертикальный режим */
+        @media screen and (orientation: portrait) {
+            #unity-canvas {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        
+        /* Адаптация под горизонтальный режим */
+        @media screen and (orientation: landscape) {
+            #unity-canvas {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
