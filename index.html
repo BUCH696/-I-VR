@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | MIRVR</title>
+    <title>=MIRVR</title>
     <style>
         body, html {
             margin: 0;
@@ -39,7 +39,7 @@
             height: 2em;
             width: 2em;
             position: relative;
-            transform: rotatex(30deg) rotatey(45deg);
+            transform: rotateX(30deg) rotateY(45deg);
             transform-style: preserve-3d;
             animation: cube-spin 1.5s infinite ease-in-out;
         }
@@ -60,30 +60,53 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #333;
-            transform: translatez(1em);
-            animation: cube-explode 2s infinite ease-in-out;
+            background-color: #333; /* Темный цвет для куба */
+            transform: translateZ(1em); /* Увеличение глубины для куба */
             opacity: 0.7;
+        }
+
+        .side:nth-child(1) {
+            transform: rotateY(90deg);
+        }
+
+        .side:nth-child(2) {
+            transform: rotateY(180deg);
+        }
+
+        .side:nth-child(3) {
+            transform: rotateY(270deg);
+        }
+
+        .side:nth-child(4) {
+            transform: rotateY(360deg);
+        }
+
+        .side:nth-child(5) {
+            transform: rotateX(90deg);
+        }
+
+        .side:nth-child(6) {
+            transform: rotateX(270deg);
         }
 
         @keyframes cube-spin {
             0% {
-                transform: rotatex(30deg) rotatey(45deg);
+                transform: rotateX(30deg) rotateY(45deg);
             }
             100% {
-                transform: rotatex(30deg) rotatey(405deg);
+                transform: rotateX(30deg) rotateY(405deg);
             }
         }
 
         @keyframes cube-explode {
             0% {
-                transform: translatez(1em);
+                transform: translateZ(1em);
             }
             50% {
-                transform: translatez(1.5em);
+                transform: translateZ(1.5em);
             }
             100% {
-                transform: translatez(1em);
+                transform: translateZ(1em);
             }
         }
     </style>
