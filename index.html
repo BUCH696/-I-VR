@@ -1,41 +1,170 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | MIRVR</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=960 height=600 tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
+    <title>🚀MIRVR</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #231F20; /* Цвет фона страницы */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #231F20; /* Фон канваса */
+        }
+
+        #loading-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background-color: #231F20;
+        }
+
+        .cube {
+            font-size: 48px;
+            height: 2em;
+            width: 2em;
+            position: relative;
+            transform: rotateX(30deg) rotateY(45deg);
+            transform-style: preserve-3d;
+            animation: cube-spin 1.5s infinite ease-in-out;
+        }
+
+        .side {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            transform-style: preserve-3d;
+        }
+
+        .side::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #333; /* Темный цвет для куба */
+            transform: translateZ(1em); /* Увеличение глубины для куба */
+            opacity: 0.7;
+        }
+
+        .side:nth-child(1) {
+            transform: rotateY(90deg);
+        }
+
+        .side:nth-child(2) {
+            transform: rotateY(180deg);
+        }
+
+        .side:nth-child(3) {
+            transform: rotateY(270deg);
+        }
+
+        .side:nth-child(4) {
+            transform: rotateY(360deg);
+        }
+
+        .side:nth-child(5) {
+            transform: rotateX(90deg);
+        }
+
+        .side:nth-child(6) {
+            transform: rotateX(270deg);
+        }
+
+        @keyframes cube-spin {
+            0% {
+                transform: rotateX(30deg) rotateY(45deg);
+            }
+            100% {
+                transform: rotateX(30deg) rotateY(405deg);
+            }
+        }
+
+        @keyframes cube-explode {
+            0% {
+                transform: translateZ(1em);
+            }
+            50% {
+                transform: translateZ(1.5em);
+            }
+            100% {
+                transform: translateZ(1em);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-container">
+        <div class="cube">
+            <div class="side"></div>
+            <div class="side"></div>
+            <div class="side"></div>
+            <div class="side"></div>
+            <div class="side"></div>
+            <div class="side"></div>
+        </div>
+    </div>
+
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+
     <script src="Build/MIRVR.loader.js"></script>
     <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        // Обрабатываем мобильные устройства
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            var meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+            document.getElementsByTagName('head')[0].appendChild(meta);
+        }
 
+        // Конфигурация Unity
         var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
+        var loadingContainer = document.querySelector("#loading-container");
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/MIRVR.loader.js";
+        var config = {
+            dataUrl: buildUrl + "/MIRVR.data",
+            frameworkUrl: buildUrl + "/MIRVR.framework.js",
+            codeUrl: buildUrl + "/MIRVR.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "MIRVR",
+            productName: "MIRVR",
+            productVersion: "0.1",
+            showBanner: function(msg, type) {}
+        };
 
-        document.body.style.textAlign = "left";
-      }
-
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/MIRVR.data",
-        frameworkUrl: "Build/MIRVR.framework.js",
-        codeUrl: "Build/MIRVR.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "MIRVR",
-        productName: "MIRVR",
-        productVersion: "0.2",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+                // Можно реализовать отображение прогресс-бара, если требуется
+            }).then((unityInstance) => {
+                // Убираем контейнер загрузки и показываем канвас после завершения загрузки
+                loadingContainer.style.display = 'none';
+                canvas.style.display = 'block';
+            }).catch((message) => {
+                alert(message);
+            });
+        };
+        document.body.appendChild(script);
     </script>
-  </body>
+</body>
 </html>
